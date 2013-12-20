@@ -1,11 +1,11 @@
 #include "stdio.h"
 #include "string.h"
 #include <stdlib.h>
-typedef struct Song{
+typedef struct Song{//the Song structure
 	char name[31];
 	long double quality;
 }Song;
-void swapSong(struct Song* song1, struct Song* song2){
+void swapSong(struct Song* song1, struct Song* song2){//swap between 2 songs
     char stringBuffer[31];
     long double qualityBuffer;
     strcpy(stringBuffer,song1->name);
@@ -15,7 +15,7 @@ void swapSong(struct Song* song1, struct Song* song2){
     strcpy(song2->name,stringBuffer);
     song2->quality=qualityBuffer;
 }
-int sortAlbum(struct Song** theAlbum,int length){
+int sortAlbum(struct Song** theAlbum,int length){//receive the pointer to the album as input, sort the album be ascending quality
     int i,k;
     if(length==1){
 	return 0;
