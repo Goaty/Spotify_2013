@@ -23,50 +23,46 @@ void swapSong(struct Song* song1, struct Song* song2){
 }
 int sortAlbumByQuality(struct Song** theAlbum,int length){//sort album by the song quality
     int i,k;
-    if(length==1){
-	return 0;
+	if(length==1){
+		return 0;
     }
     if(length==2){
-	if(theAlbum[0]->quality>theAlbum[1]->quality){
-	    swapSong(theAlbum[0],theAlbum[1]);
-	}
-	return 0;
+		if(theAlbum[0]->quality>theAlbum[1]->quality){
+			swapSong(theAlbum[0],theAlbum[1]);
+		}
+		return 0;
     }
-    for(i=2;i<length;i++){
-        for(k=i;(theAlbum[k-1]->quality>theAlbum[k]->quality)&(k>1);k-- ){
-            swapSong(theAlbum[k-1],theAlbum[k]);
-        }
+    for(i=1;i<length;i++){
+		for(k=i;(k>0)&&(theAlbum[k-1]->quality>theAlbum[k]->quality);k--){
+			swapSong(theAlbum[k-1],theAlbum[k]);
+		}
     }
     return 0;
 }
 int sortAlbumByOrder(struct Song** theAlbum, int length){//after sorting by song Quality, put the song with higher order after the song with lower order (ascending order for songs with same quality)
-    int songNumber;//pointer for going through list of the songs
-    int songPointer;//pointer for going through list of same quality songs
+    int songNumber=0;//pointer for going through list of the songs
+    int songPointer=0;//pointer for going through list of same quality songs
     long double qualityLevel;//specify the quality of song group
     int memberNumber=0;//Number of members in a song group with same quality
     int i,k;
-    for (songNumber=1;songNumber<length;songNumber++){
-        qualityLevel=theAlbum[songNumber]->quality;
-        for(songPointer=songNumber;theAlbum[songPointer]->quality==qualityLevel;songPointer++){
-            memberNumber++;
-        }
-        if(memberNumber==1){
-            break;
-        }
-        if(memberNumber==2){
-            if(theAlbum[songNumber]->order>theAlbum[songNumber+1]->order){
-                swapSong(theAlbum[songNumber],theAlbum[songNumber+1]);
-            }
-            memberNumber=1;
-            break;
-        }
-        for(i=songNumber+2;i<songNumber+memberNumber;i++){
-            for(k=i;(theAlbum[k-1]->order>theAlbum[k]->order)&(k>songNumber+1);k--){
-                swapSong(theAlbum[k-1],theAlbum[k]);
-            }
-        }
-        songNumber+=memberNumber;
-        memberNumber=0;
+    while (songNumber<length){
+        qualityLevel=theAlbum[songNumber]->quality;//change to while loop for better management
+		songPointer=songNumber;
+		while((songPointer<length)&&(theAlbum[songPointer]->quality==qualityLevel)){
+			songPointer++;
+			memberNumber++;
+		}
+		if(memberNumber==1){}
+		else{
+			for(i=1;i<songNumber+memberNumber;i++){
+				for(k=i;(k>songNumber)&&(theAlbum[k-1]->order>theAlbum[k]->order);k--){
+					swapSong(theAlbum[k-1],theAlbum[k]);
+				}
+			}
+		}
+		/*printf("memberNumber: %d\n",memberNumber);*/
+		songNumber+=memberNumber;
+		memberNumber=0;
     }
 }
 int main(){
@@ -118,7 +114,17 @@ int main(){
     //}
     //for testing
     sortAlbumByQuality(album,albumLength);
+	//for testing
+	/*printf("Songs after sorting by quality:\n");
+	for(songNumber=0;songNumber<albumLength;songNumber++){
+		printf("Song Name: %s; Song quality: %Lf;Song order: %d\n",album[songNumber]->name,album[songNumber]->quality,album[songNumber]->order);
+	}*/
     sortAlbumByOrder(album, albumLength);
+	//for testing
+	/*printf("Songs after sorting by order:\n");
+	for(songNumber=0;songNumber<albumLength;songNumber++){
+		printf("Song Name: %s; Song quality: %Lf;Song order: %d\n",album[songNumber]->name,album[songNumber]->quality,album[songNumber]->order);
+	}*/
     if(selectedNumber==0){
         getchar();
         return 0;
