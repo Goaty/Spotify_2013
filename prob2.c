@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include "stdio.h"
 #include "string.h"
 #include <stdlib.h>
@@ -41,12 +42,12 @@ int sortAlbumByQuality(struct Song** theAlbum,int length){//sort album by the so
 int sortAlbumByOrder(struct Song** theAlbum, int length){//after sorting by song Quality, put the song with higher order after the song with lower order (ascending order for songs with same quality)
     int songNumber;//pointer for going through list of the songs
     int songPointer;//pointer for going through list of same quality songs
-    int qualityLevel;//specify the quality of song group
+    long double qualityLevel;//specify the quality of song group
     int memberNumber=0;//Number of members in a song group with same quality
     int i,k;
     for (songNumber=1;songNumber<length;songNumber++){
         qualityLevel=theAlbum[songNumber]->quality;
-        for(songPointer=songNumber;theAlbum[songPointer]->quality=qualityLevel;songPointer++){
+        for(songPointer=songNumber;theAlbum[songPointer]->quality==qualityLevel;songPointer++){
             memberNumber++;
         }
         if(memberNumber==1){
